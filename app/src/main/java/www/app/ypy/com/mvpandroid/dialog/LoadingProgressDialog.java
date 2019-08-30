@@ -2,11 +2,13 @@ package www.app.ypy.com.mvpandroid.dialog;
 
 import android.content.Context;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.TextView;
 
 import www.app.ypy.com.mvpandroid.R;
+import www.app.ypy.com.mvpandroid.utils.UIUtils;
 
 
 /**
@@ -32,11 +34,12 @@ public class LoadingProgressDialog extends BaseDialog {
     }
 
     @Override
-    protected void initLayout() {
+    protected View initLayout() {
 //        setContentView(R.layout.dialog_loading_progress);
-        setContentView(R.layout.load_layout);
+        View view = UIUtils.inflate(R.layout.load_layout);
+        setContentView(view);
         mTvMsg = (TextView) this.findViewById(R.id.tv_loadingMsg);
-
+         return view;
     }
 
     public void setTitle(String title) {

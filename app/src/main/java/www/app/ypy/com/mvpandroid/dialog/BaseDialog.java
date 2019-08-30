@@ -3,54 +3,42 @@ package www.app.ypy.com.mvpandroid.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.Display;
+import android.view.View;
 import android.view.Window;
 
+import butterknife.ButterKnife;
+
 /**
- * Created by Administrator on 2016/7/11.
- *
- * 对话框
+ * 功能：对话框base
+ * 作者: YUAN_YE
+ * 日期: 2019/4/23
+ * 时间: 17:39
  */
 public abstract class BaseDialog extends Dialog {
 
-    public static float DEFAULT_SCALE = 0.9f;
-//    private OnDismissListener mOutListener;
-//    private OnDismissListener mInnerListener = new InnerDismissListener();
-
-    public BaseDialog(Context context) {
+    public BaseDialog(@NonNull Context context) {
         super(context, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-        init();
         Window window = getWindow();
         window.setBackgroundDrawableResource(android.R.color.transparent);
-//        super.setOnDismissListener(mInnerListener);
     }
 
-    public BaseDialog(Context context, int themeResId) {
+
+    public BaseDialog(@NonNull Context context, int themeResId) {
         super(context, themeResId);
-        init();
         Window window = getWindow();
         window.setBackgroundDrawableResource(android.R.color.transparent);
-//        super.setOnDismissListener(mInnerListener);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        initLayout();
+        ButterKnife.bind(this, initLayout());
+        init();
     }
 
-    protected float getWidthScale() {
-        return DEFAULT_SCALE;
-    }
-
-    protected float getHeightScale() {
-        return DEFAULT_SCALE;
-    }
-
-    protected abstract void init();
-
-    protected abstract void initLayout();
 
     @Override
     public void show() {
@@ -62,18 +50,10 @@ public abstract class BaseDialog extends Dialog {
         window.setLayout(width, height);
     }
 
-//    @Override
-//    public void setOnDismissListener(OnDismissListener listener) {
-//        mOutListener = listener;
-//    }
 
-//    class InnerDismissListener implements OnDismissListener{
-//        @Override
-//        public void onDismiss(DialogInterface dialog) {
-//            if (mOutListener != null) {
-//                mOutListener.onDismiss(dialog);
-//                Log.e("InnerDismiss","onDismiss...............");
-//            }
-//        }
-//    }
+    protected abstract void init();
+
+    protected abstract View initLayout();
+
+
 }

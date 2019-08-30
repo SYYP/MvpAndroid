@@ -12,12 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.trello.rxlifecycle.LifecycleTransformer;
-import com.trello.rxlifecycle.components.RxFragment;
+
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import de.greenrobot.event.EventBus;
 import www.app.ypy.com.mvpandroid.event.BaseEvent;
+import www.app.ypy.com.mvpandroid.fragment.RxFragment;
 
 /**
  * Created by ypu

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+      <LinearLayout
+          android:id="@+id/liner_text_info"
+          android:layout_margin="5dp"
+          android:background="@drawable/shape_backblack"
+          android:layout_width="@dimen/dp_90"
+          android:layout_height="wrap_content">
+          <TextView
+              android:gravity="center"
+              android:layout_margin="5dp"
+              android:id="@+id/item_text_info"
+              android:text="小学3年级"
+              android:padding="5dp"
+              android:textColor="@color/directory_text"
+              android:textSize="@dimen/sp_14"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content" />
+      </LinearLayout>
+
+</LinearLayout>

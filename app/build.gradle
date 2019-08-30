@@ -1,8 +1,8 @@
-
-apply plugin: 'com.android.library'
+apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
+        applicationId "www.app.ypy.com.mvpandroid"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
@@ -13,10 +13,16 @@ android {
             targetCompatibility JavaVersion.VERSION_1_8
         }
         ndk {
-            abiFilters 'armeabi', 'armeabi-v7a', 'x86'
-
+            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
         }
     }
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -58,4 +64,13 @@ dependencies {
     //阿里的json解析工具
     implementation 'com.alibaba:fastjson:1.1.62.android'
     implementation 'org.greenrobot:eventbus:3.0.0'
+    //二维码扫描
+    implementation 'com.google.zxing:core:3.2.1'
+    implementation 'com.journeyapps:zxing-android-embedded:3.3.0'
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:recyclerview-v7:27.1.1'
+    implementation 'com.android.support:support-annotations:20.0.0'
+    //springview
+    implementation 'com.liaoinstan.springview:library:1.5.1'
+    implementation 'com.liaoinstan.springview:MeituanHeader:1.5.1'       //美团风格 （header and footer）
 }
