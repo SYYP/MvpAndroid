@@ -72,5 +72,9 @@ dependencies {
     implementation 'com.android.support:support-annotations:20.0.0'
     //springview
     implementation 'com.liaoinstan.springview:library:1.5.1'
-    implementation 'com.liaoinstan.springview:MeituanHeader:1.5.1'       //美团风格 （header and footer）
+    implementation 'com.liaoinstan.springview:MeituanHeader:1.5.1'       //美团风格 （header and footer）、
+
+    //二维码扫描
+    implementation 'com.google.zxing:core:3.2.1'
+    implementation 'com.journeyapps:zxing-android-embedded:3.3.0'
 }

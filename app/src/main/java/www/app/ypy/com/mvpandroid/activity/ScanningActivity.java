@@ -1,5 +1,6 @@
 package www.app.ypy.com.mvpandroid.activity;
 
+import www.app.ypy.com.mvpandroid.R;
 import www.app.ypy.com.mvpandroid.base.BaseMvpActivity;
 
 /**
@@ -9,7 +10,7 @@ import www.app.ypy.com.mvpandroid.base.BaseMvpActivity;
 public class ScanningActivity extends BaseMvpActivity {
     @Override
     protected int getXmlView() {
-        return 0;
+        return R.layout.activity_scanning;
     }
 
     @Override

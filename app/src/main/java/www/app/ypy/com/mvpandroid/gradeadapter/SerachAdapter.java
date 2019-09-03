@@ -40,6 +40,10 @@ public class SerachAdapter {
         recyclerView.setAdapter(mCommonRecylerAdapter);
     }
 
+    public void getHistoryData(List<Historybean> historybeans) {
+        mCommonRecylerAdapter.setList(historybeans);
+    }
+
     public interface SetOnClick {
         void getOnClick(Historybean historybean);
 

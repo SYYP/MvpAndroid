@@ -1,10 +1,13 @@
 package www.app.ypy.com.mvpandroid.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +17,12 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
+
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -64,21 +70,14 @@ public class SerachActivity extends BaseMvpActivity {
     private String mDistrinbution = "";
     List<Historybean> historybeans = new ArrayList<>();
     private SerachAdapter mSerachAdapter;
+    @Override
+    public void showNetError() { }
+    @Override
+    public void noNetWork() {}
 
     @Override
-    public void showNetError() {
+    public void setPresenter(Object presenter) {}
 
-    }
-
-    @Override
-    public void noNetWork() {
-
-    }
-
-    @Override
-    public void setPresenter(Object presenter) {
-
-    }
     /**
      * 加载列表页面适配器
      *
@@ -87,7 +86,7 @@ public class SerachActivity extends BaseMvpActivity {
     private void addHistoryAdater(List<Historybean> historybeans) {
         recyclerSerach.setLayoutManager(new LinearLayoutManager(this));
         recyclerSerach.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        if(mSerachAdapter==null) {
+        if (mSerachAdapter == null) {
             mSerachAdapter = new SerachAdapter();
             mSerachAdapter.setOnClickListener(new SerachAdapter.SetOnClick() {
                 @Override
@@ -105,7 +104,7 @@ public class SerachActivity extends BaseMvpActivity {
                 }
             });
         }
-         mSerachAdapter.addHistoryAdapter(historybeans,this,recyclerSerach);
+        mSerachAdapter.addHistoryAdapter(historybeans, this, recyclerSerach);
 
     }
 
@@ -115,9 +114,20 @@ public class SerachActivity extends BaseMvpActivity {
     }
 
     @Override
+    public void processExtraData() {
+        super.processExtraData();
+        Intent intent = getIntent();
+        if (intent != null) {
+            Bundle extras = intent.getExtras();
+            mDistrinbution = (String) extras.get(Contact.DISTRIBUTION);
+        }
+    }
+
+    @Override
     protected void loadData() {
         textTitle.setText("搜索");
         String string;
+        addEditListener();//添加输入框的监听
         if (mDistrinbution.equals(Contact.DISTRIBUTION)) {
             string = SpUtils.getString(Myapplication.getApplication(), Contact.DISTRIBUTION, "");
         } else {
@@ -136,8 +146,80 @@ public class SerachActivity extends BaseMvpActivity {
 
     }
 
-     @OnClick({R.id.img_back,R.id.img_delete,R.id.text_serach,R.id.img_clean})
-     public void  OnClick(View view){
+    @OnClick({R.id.img_back, R.id.img_delete, R.id.text_serach, R.id.img_clean})
+    public void OnClick(View view) {
+        switch (view.getId()) {
+            case R.id.img_back://返回
+                finish();
+                break;
+            case R.id.img_delete:
+                if (TextUtils.isEmpty(editQueryName.getText().toString()))
+                    return;
+                editQueryName.setText("");
+                imgDelete.setImageResource(R.drawable.img_serach);
+                break;
+            case R.id.text_serach://搜索
+                //点击搜索时候将数据添加到集合中
+                getSerach();
+                break;
+            case R.id.img_clean:
+                //清除集合中的数据，重新刷新
+                historybeans.clear();
+                SpUtils.putString(Myapplication.getApplication(), Contact.HISTORTDATA, JSON.toJSONString(historybeans));
+                if (mSerachAdapter != null) {
+                    mSerachAdapter.getHistoryData(historybeans);
+                }
+                break;
+        }
+    }
 
-     }
+    /**
+     * 点击搜索
+     */
+    private void getSerach() {
+        if (TextUtils.isEmpty(editQueryName.getText().toString())) {
+            toastShort(getString(R.string.string_tips_word));
+            return;
+        }
+        Historybean historybean = new Historybean();
+        historybean.setName(editQueryName.getText().toString());
+        historybeans.add(historybean);
+        Collections.reverse(historybeans);
+        EventMessage eventMessage = new EventMessage();
+        if (mDistrinbution.equals(Contact.DISTRIBUTION)) {
+            SpUtils.putString(Myapplication.getApplication(), Contact.DISTRIBUTION, JSON.toJSONString(historybeans));
+            eventMessage.setMsg(Contact.DISTRIBUTION);
+        } else {
+            SpUtils.putString(Myapplication.getApplication(), Contact.HISTORTDATA, JSON.toJSONString(historybeans));
+            eventMessage.setMsg(Contact.HISTORTREQURESCODE);
+        }
+        eventMessage.setMsg2(editQueryName.getText().toString());
+        EventBus.getDefault().postSticky(eventMessage);
+        finish();
+    }
+
+    /**
+     * 搜索框的监听
+     */
+    private void addEditListener() {
+
+        editQueryName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                //当内容有变化时候
+                imgDelete.setImageResource(R.drawable.img_delete);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+    }
 }
