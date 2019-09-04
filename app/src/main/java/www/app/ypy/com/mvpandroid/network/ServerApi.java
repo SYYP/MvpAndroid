@@ -37,7 +37,7 @@ public interface ServerApi {
      * @return
      */
     @GET("mobile/school/admin/{userId}")
-    Observable<BaseResult<List<InforBean.MainTeacherClazzBean>>> getClassName(@Path("userId") int userId, @Query("sectionNameCode") String sectionNameCode);
+    Observable<BaseResult<List<InforBean.MainTeacherClazzBean>>> getGradeName(@Path("userId") int userId, @Query("sectionNameCode") String sectionNameCode);
 
     /**
      *    获取班级或者科目
@@ -60,10 +60,10 @@ public interface ServerApi {
   //   @DELETE("mobile/common/devices")
      @HTTP(method = "DELETE",path ="mobile/common/devices",hasBody = true)
      Observable<BaseResult<List<DeleteEqument>>> getDeleteEqument(@Body List<DeleteBean> deleteEqumentList);
-//
-//     //绑定接口
-//     @HTTP(method = "POST",path ="mobile/common/devices",hasBody = true)
-//     Observable<BaseResult<List<DeleteEqument>>> getBindEqument(@Body List<DeleteBean> bingEqumentList);
+
+     //绑定接口
+     @HTTP(method = "POST",path ="mobile/common/devices",hasBody = true)
+     Observable<BaseResult<List<DeleteEqument>>> getBindEqument(@Body List<DeleteBean> bingEqumentList);
 
 //
 

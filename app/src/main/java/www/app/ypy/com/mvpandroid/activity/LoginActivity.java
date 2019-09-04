@@ -55,25 +55,33 @@ public class LoginActivity extends BaseMvpActivity<ILoginInterface.Presenter> im
         //如果存在保存的状态值，证明登录过。直接登录
         boolean aBoolean = SpUtils.getBoolean(Myapplication.getApplication(), Contact.LOGINSTATE, false);
         if (aBoolean) {
-           startIntent(MainActivity.class
-           );
+            startIntent(MainActivity.class
+            );
             finish();
         }
     }
 
     @Override
     public void SuccessData(InforBean loginBean) {
-        List<InforBean.MainTeacherClazzBean> mainTeacherClazz = loginBean.getMainTeacherClazz();
-        if (mainTeacherClazz != null && !mainTeacherClazz.isEmpty()) {
-            //保存返回的信息
-            SpUtils.putString(LoginActivity.this, Contact.USERINFO, JSON.toJSONString(loginBean));
-            SpUtils.putBoolean(Myapplication.getApplication(), Contact.LOGINSTATE, true);
-            Bundle bundle = new Bundle();//接口成功后传递数据
-            startIntentWithExtras(MainActivity.class, bundle);
-            LogUtils.e(loginBean.toString());
+        if (Contact.TEACHER.equals(loginBean.getRoleNameCode())) {
+            List<InforBean.MainTeacherClazzBean> mainTeacherClazz = loginBean.getMainTeacherClazz();
+            if (mainTeacherClazz != null && !mainTeacherClazz.isEmpty()) {
+                //保存返回的信息
+                startNewActivity(loginBean);
+                LogUtils.e(loginBean.toString());
+            } else {
+                toastShort("当前班主任无授课班级");
+            }
         } else {
-            toastShort("请用班主任或校园管理员登录");
+            startNewActivity(loginBean);
         }
+    }
+
+    private void startNewActivity(InforBean loginBean) {
+        SpUtils.putString(LoginActivity.this, Contact.USERINFO, JSON.toJSONString(loginBean));
+        SpUtils.putBoolean(Myapplication.getApplication(), Contact.LOGINSTATE, true);
+        Bundle bundle = new Bundle();//接口成功后传递数据
+        startIntentWithExtras(MainActivity.class, bundle);
     }
 
     @Override

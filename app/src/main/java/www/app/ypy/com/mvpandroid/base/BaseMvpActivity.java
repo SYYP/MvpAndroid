@@ -1,32 +1,24 @@
 package www.app.ypy.com.mvpandroid.base;
-import android.arch.lifecycle.Lifecycle;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.trello.rxlifecycle.LifecycleTransformer;
-import com.trello.rxlifecycle.android.RxLifecycleAndroid;
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import de.greenrobot.event.EventBus;
-import www.app.ypy.com.mvpandroid.R;
-import www.app.ypy.com.mvpandroid.event.BaseEvent;
 
+import www.app.ypy.com.mvpandroid.bean.EventMessage;
 /**
  * Created by ypu
  * on 2019/8/23 0023
@@ -51,9 +43,10 @@ public  abstract class BaseMvpActivity<T extends IBasePresenter> extends RxAppCo
         initActivityData();
         setContentView(getXmlView());
         mUnbind = ButterKnife.bind(this);
+        setPresenter(presenter);
         processExtraData();
         loadData();
-        setPresenter(presenter);
+
     }
 
     @Override
@@ -144,16 +137,33 @@ public  abstract class BaseMvpActivity<T extends IBasePresenter> extends RxAppCo
         Intent intent = new Intent(this, cls);
         startActivity(intent);
     }
-
+    /**
+     * 含有Bundle通过Class打开编辑界面
+     *
+     * @param cls
+     * @param bundle
+     * @param requestCode
+     */
+    public void startActivityForResult(Class<?> cls, Bundle bundle, int requestCode) {
+        Intent intent = new Intent();
+        intent.setClass(this, cls);
+        if (bundle != null) {
+            intent.putExtras(bundle);
+        }
+        startActivityForResult(intent, requestCode);
+    }
     /**
      * 含有参数的传递
      *
-     * @param cls
+     * @param clz
      * @param extras
      */
-    public void startIntentWithExtras(Class<?> cls, Bundle extras) {
-        Intent intent = new Intent(this, cls);
-        intent.putExtras(extras);
+    public void startIntentWithExtras(Class<?> clz, Bundle extras) {
+        Intent intent = new Intent();
+        intent.setClass(this, clz);
+        if (extras != null) {
+            intent.putExtras(extras);
+        }
         startActivity(intent);
     }
 
@@ -187,7 +197,8 @@ public  abstract class BaseMvpActivity<T extends IBasePresenter> extends RxAppCo
             toast.show();
         }
     }
-    public void onEventMainThread(BaseEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventMessage event) {
         if (event == null) {
             return;
         }

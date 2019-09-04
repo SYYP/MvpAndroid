@@ -173,7 +173,7 @@ public final class NetWorkManager {
      */
     public Observable<List<InforBean.MainTeacherClazzBean>> getGradeName(int userId, String sectionNameCode) {
 
-        return getServerApi().getClassName(userId, sectionNameCode)
+        return getServerApi().getGradeName(userId, sectionNameCode)
                 .compose(RxSchedulersHelper.io_main())
                 .compose(RxResultHelper.handleResult(loadingProgressDialog));
 
@@ -221,15 +221,15 @@ public final class NetWorkManager {
                 .compose(RxSchedulersHelper.io_main())
                 .compose(RxResultHelper.handleResult(loadingProgressDialog));
     }
-//
-//    /**
-//     *     绑定接口
-//     * @param
-//     * @return
-//     */
-//    public Observable<List<DeleteEqument>> getBindEqument(List<DeleteBean> deleteEqumentList) {
-//        return getServerApi().getBindEqument(deleteEqumentList)
-//                .compose(RxSchedulersHelper.io_main())
-//                .compose(RxResultHelper.handleResult(loadingProgressDialog));
-//    }
+
+    /**
+     *     绑定接口
+     * @param
+     * @return
+     */
+    public Observable<List<DeleteEqument>> getBindEqument(List<DeleteBean> deleteEqumentList) {
+        return getServerApi().getBindEqument(deleteEqumentList)
+                .compose(RxSchedulersHelper.io_main())
+                .compose(RxResultHelper.handleResult(loadingProgressDialog));
+    }
 }

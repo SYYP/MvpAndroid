@@ -37,6 +37,14 @@
             android:name=".activity.ScanningActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
             android:screenOrientation="portrait"></activity><!--扫码!-->
+        <activity
+            android:name=".activity.ScanResultActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="portrait"></activity><!--扫码结果!-->
+        <activity
+            android:name=".activity.DistribtuionNumberActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="portrait"></activity><!--绑定页面!-->
     </application>
 
 </manifest>

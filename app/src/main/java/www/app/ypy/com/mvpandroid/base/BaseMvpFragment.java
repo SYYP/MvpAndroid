@@ -14,9 +14,14 @@ import android.view.ViewGroup;
 import com.trello.rxlifecycle.LifecycleTransformer;
 
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import de.greenrobot.event.EventBus;
+
+import www.app.ypy.com.mvpandroid.bean.EventMessage;
 import www.app.ypy.com.mvpandroid.event.BaseEvent;
 import www.app.ypy.com.mvpandroid.fragment.RxFragment;
 
@@ -84,7 +89,8 @@ public abstract class BaseMvpFragment<T extends IBasePresenter> extends RxFragme
         Intent intent = new Intent(mContext, cls);
         startActivity(intent);
     }
-    public void onEventMainThread(BaseEvent event) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(EventMessage event) {
         try {
 
         }catch (Exception e){

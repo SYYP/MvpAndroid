@@ -36,6 +36,10 @@ public interface DailyInterface {
          * @param mainTeacherClazzBean
          */
          void getSuccessClassOrSubject(List<InforBean.MainTeacherClazzBean> mainTeacherClazzBean);
+        /**
+         *  绑定成功后的集合
+         */
+        void getSuccessData(int failNumber,int successNumber);
     }
 
     interface Presenter extends IBasePresenter {
@@ -72,5 +76,7 @@ public interface DailyInterface {
          * @param searchTag
          */
          void getClassNameOrSubject(int userId,String name,int searchTag);
+
+          void getBindEqumentData(List<DeleteEqument> list);
     }
 }

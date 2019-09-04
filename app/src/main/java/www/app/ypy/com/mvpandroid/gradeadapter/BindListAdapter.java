@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import www.app.ypy.com.mvpandroid.R;
@@ -20,11 +21,12 @@ public class BindListAdapter {
     CommonRecylerAdapter mCommonRecylerAdapter;
     SetOnClick mSetOnClick;
     boolean mPhotoabool;
-    List<Bindlistbean> mBindlistbeans;
+    List<Bindlistbean> mBindlistbeans = new ArrayList<>();
 
-    public BindListAdapter(boolean photoabool, List<Bindlistbean> bindlistbeans) {
+    public BindListAdapter(boolean photoabool, List<Bindlistbean> bindlistbean) {
         mPhotoabool = photoabool;
-        mBindlistbeans = bindlistbeans;
+        mBindlistbeans.clear();
+        mBindlistbeans.addAll(bindlistbean);
     }
 
     /**
@@ -112,8 +114,9 @@ public class BindListAdapter {
         }
     }
 
-    public void getBindList(List<Bindlistbean> mBindlistbeans, boolean photoabool) {
-        this.mBindlistbeans = mBindlistbeans;
+    public void getBindList(List<Bindlistbean> mBindlistbean, boolean photoabool) {
+        mBindlistbeans.clear();
+        mBindlistbeans.addAll(mBindlistbean);
         this.mPhotoabool = photoabool;
         mCommonRecylerAdapter.setList(mBindlistbeans);
     }
@@ -127,7 +130,5 @@ public class BindListAdapter {
         this.mSetOnClick = setOnClick;
     }
 
-    public CommonRecylerAdapter getCommonRecylerAdapter() {
-        return mCommonRecylerAdapter;
-    }
+
 }

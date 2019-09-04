@@ -59,7 +59,9 @@ public class CurrencyDailogs extends BaseDialog {
         tvCanel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                   dismiss();
+                if(mSetOnClick!=null){
+                    mSetOnClick.getCancle();
+                }
             }
         });
 
@@ -74,6 +76,7 @@ public class CurrencyDailogs extends BaseDialog {
 
     public interface SetOnClick {
         void getOk();
+        void getCancle();
 
     }
 

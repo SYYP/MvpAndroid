@@ -10,7 +10,7 @@
         app:zxing_framing_rect_height="250dp">
     </com.journeyapps.barcodescanner.BarcodeView>
 
-    <www.app.rjjy.com.hirinequmentproject.util.CustomViewfinderView
+    <www.app.ypy.com.mvpandroid.utils.CustomViewfinderView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/zxing_viewfinder_view"

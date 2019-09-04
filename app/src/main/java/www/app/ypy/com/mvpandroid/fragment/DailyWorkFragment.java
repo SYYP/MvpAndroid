@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -39,6 +40,7 @@ import www.app.ypy.com.mvpandroid.bean.Bindlistbean;
 import www.app.ypy.com.mvpandroid.bean.DailogBean;
 import www.app.ypy.com.mvpandroid.bean.DeleteBean;
 import www.app.ypy.com.mvpandroid.bean.DeleteEqument;
+import www.app.ypy.com.mvpandroid.bean.EventMessage;
 import www.app.ypy.com.mvpandroid.bean.InforBean;
 import www.app.ypy.com.mvpandroid.dailymoudel.DailyInterface;
 import www.app.ypy.com.mvpandroid.dailymoudel.DailyPresenter;
@@ -263,9 +265,6 @@ public class DailyWorkFragment extends BaseMvpFragment<DailyInterface.Presenter>
                         UIUtils.showToastSafe("请先筛选年级", 0);
                         return;
                     } else {
-                        if (linerSelectYearname.getVisibility() == View.VISIBLE) ;
-                        linerSelectYearname.setVisibility(View.GONE);
-                        linerSelectClassname.setVisibility(View.VISIBLE);
                         //根据账号类型判断获取不同的数据源
                         if (mInforBean.getRoleNameCode().equals(Contact.MANAGER)) {
                             //网络请求筛选班级或者科目的数据源
@@ -387,6 +386,7 @@ public class DailyWorkFragment extends BaseMvpFragment<DailyInterface.Presenter>
      * 教师班级的数据源
      */
     private void getClassNameData() {
+        linerSelectClassname.setVisibility(View.VISIBLE);
         if (mainTeacherClazzBeans.size() > 0) {
             classNameList.clear();
             for (int i = 0; i < mainTeacherClazzBeans.size(); i++) {
@@ -447,12 +447,14 @@ public class DailyWorkFragment extends BaseMvpFragment<DailyInterface.Presenter>
             //清空班级集合
             for (int i = 0; i < classNameList.size(); i++) {
                 List<InforBean.MainTeacherClazzBean.ClassInfosBean> classInfos = classNameList.get(i).getClassInfos();
-                for (int j = 0; j < classInfos.size(); j++) {
-                    classInfos.get(j).setAbool(false);
-                    if (mClassAdapter != null) {
-                        mClassAdapter.getSuccessData(classNameList, searchTag);
-                    }
+                if (classInfos != null && classInfos.size() > 0) {
+                    for (int j = 0; j < classInfos.size(); j++) {
+                        classInfos.get(j).setAbool(false);
+                        if (mClassAdapter != null) {
+                            mClassAdapter.getSuccessData(classNameList, searchTag);
+                        }
 
+                    }
                 }
             }
         }
@@ -491,6 +493,11 @@ public class DailyWorkFragment extends BaseMvpFragment<DailyInterface.Presenter>
                         textGl.setText(mabool == true ? "完成" : "管理");
                         mabool = !mabool;
                         presenter.DeleteEqument(deleteEqumentList);
+                        mBatchDeleteDialog.dismiss();
+                    }
+
+                    @Override
+                    public void getCancle() {
                         mBatchDeleteDialog.dismiss();
                     }
                 });
@@ -673,6 +680,7 @@ public class DailyWorkFragment extends BaseMvpFragment<DailyInterface.Presenter>
                                 if (mainTeacherClazzBeans.get(j).isAbool())
                                     mainTeacherClazzBeans.get(j).setAbool(false);
                             }
+                            mGradeAadapter.getSuccessData(mainTeacherClazzBeans);
                         }
                     }
                 }).start();
@@ -735,21 +743,41 @@ public class DailyWorkFragment extends BaseMvpFragment<DailyInterface.Presenter>
 
     @Override
     public void getSuccessClassOrSubject(List<InforBean.MainTeacherClazzBean> mainTeacherClazzBean) {
-        if (searchTag == 2) {
-            classNameList.clear();//每次清空之前数据
-            classNameList.addAll(mainTeacherClazzBeans);
-            //设置适配器
-            if (mClassAdapter == null) {
-                mClassAdapter = new ClassAdapter(classNameList, getActivity(), searchTag);
+        Log.d("TAG", mainTeacherClazzBean.size() + "------------");
+        if (mainTeacherClazzBean == null || mainTeacherClazzBean.size() <= 0) {
+            if (linerSelectYearname.getVisibility() == View.VISIBLE) {
+                linerSelectYearname.setVisibility(View.GONE);
             }
-            mClassAdapter.setClassAdapter(recyclerClass, mInforBean);
+            UIUtils.showToastSafe("暂时没有数据", 0);
+            linerSelectClassname.setVisibility(View.GONE);
         } else {
-            subjectList.addAll(mainTeacherClazzBeans);
-            if (mClassAdapter == null) {
-                mClassAdapter = new ClassAdapter(subjectList, getActivity(), searchTag);
+            linerSelectClassname.setVisibility(View.VISIBLE);
+            if (searchTag == 2) {
+                classNameList.clear();//每次清空之前数据
+                classNameList.addAll(mainTeacherClazzBean);
+                //设置适配器
+                if (mClassAdapter == null) {
+                    mClassAdapter = new ClassAdapter(classNameList, getActivity(), searchTag);
+                    mClassAdapter.setClassAdapter(recyclerClass, mInforBean);
+                    Log.d("TAG", "--------------走这边吗" + classNameList.size());
+                } else {
+                    mClassAdapter.getSuccessData(classNameList, searchTag);
+                    Log.d("TAG", "--------------zhekau" + classNameList.size());
+                }
+
+            } else {
+                subjectList.addAll(mainTeacherClazzBeans);
+                if (mClassAdapter == null) {
+                    mClassAdapter = new ClassAdapter(subjectList, getActivity(), searchTag);
+                }
+                mClassAdapter.setClassAdapter(recyclerClass, mInforBean);
             }
-            mClassAdapter.setClassAdapter(recyclerClass, mInforBean);
         }
+    }
+
+    @Override
+    public void getSuccessData(int failNumber, int successNumber) {
+
     }
 
     /**
@@ -828,6 +856,11 @@ public class DailyWorkFragment extends BaseMvpFragment<DailyInterface.Presenter>
                     mCurrencyDailogs.dismiss();
                 }
 
+                @Override
+                public void getCancle() {
+                    mCurrencyDailogs.dismiss();
+                }
+
             });
         }
         mCurrencyDailogs.show();
@@ -855,10 +888,30 @@ public class DailyWorkFragment extends BaseMvpFragment<DailyInterface.Presenter>
     private boolean getIsSelectBindList() {
         for (int i = 0; i < bindlist.size(); i++) {
             if (!bindlist.get(i).isAbool()) {
-
                 return false;
             }
         }
         return true;
+    }
+
+    @Override
+    public void onEventMainThread(EventMessage event) {
+        super.onEventMainThread(event);
+        String msg2 = event.getMsg2();
+        if (Contact.HISTORTREQURESCODE.equals(event.getMsg())) {
+            bindlist.clear();
+            Log.d("TAG", msg2 + "-----------OK-");
+            //拿到传过来的值去请求网络，
+            //     请求列列表页面数据(默认进来先查看账号类型，根据账号类型区别)
+            pn = 1;
+            classIds = null;
+            presenter.getBindListData(mInforBean.getUserId(), searchTag, gradeId, classIds, msg2, pageTag, subjectIds, ps, pn);
+        } else if (Contact.REFRECH.equals(event.getMsg())) {
+            bindlist.clear();
+            pn = 1;
+            classIds = null;
+            subjectIds = null;
+            presenter.getBindListData(mInforBean.getUserId(), searchTag, gradeId, classIds, msg2, pageTag, subjectIds, ps, pn);
+        }
     }
 }

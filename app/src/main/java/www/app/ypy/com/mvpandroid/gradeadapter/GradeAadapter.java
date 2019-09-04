@@ -5,6 +5,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import www.app.ypy.com.mvpandroid.R;
@@ -18,11 +19,12 @@ import www.app.ypy.com.mvpandroid.bean.InforBean;
  */
 public class GradeAadapter {
     CommonRecylerAdapter mCommonGradeRecylerAdapter;
-    private List<InforBean.MainTeacherClazzBean> mainTeacherClazzBeans;
+    private List<InforBean.MainTeacherClazzBean> mainTeacherClazzBeans = new ArrayList<>();
     Context context;
 
-    public GradeAadapter( List<InforBean.MainTeacherClazzBean> mainTeacherClazzBeans, Context context) {
-        this.mainTeacherClazzBeans = mainTeacherClazzBeans;
+    public GradeAadapter(List<InforBean.MainTeacherClazzBean> mainTeacherClazzBean, Context context) {
+        mainTeacherClazzBeans.clear();
+        mainTeacherClazzBeans.addAll(mainTeacherClazzBean);
         this.context = context;
     }
 
@@ -56,8 +58,9 @@ public class GradeAadapter {
 
     }
 
-    public void getSuccessData(List<InforBean.MainTeacherClazzBean> mainTeacherClazzBeans) {
-        this.mainTeacherClazzBeans = mainTeacherClazzBeans;
+    public void getSuccessData(List<InforBean.MainTeacherClazzBean> mainTeacherClazzBean) {
+        mainTeacherClazzBeans.clear();
+        mainTeacherClazzBeans.addAll(mainTeacherClazzBean);
         mCommonGradeRecylerAdapter.setList(mainTeacherClazzBeans);
     }
 }

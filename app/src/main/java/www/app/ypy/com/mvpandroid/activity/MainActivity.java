@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -57,6 +58,7 @@ public class MainActivity extends BaseMvpActivity {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,//写入权限
             Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS//允许挂载和反挂载文件系统可移动存储
     };
+    private static final int PERMISSION_REQUEST_COARSE_LOCATION = 1;
     @Override
     protected int getXmlView() {
         return R.layout.activity_main;
@@ -184,5 +186,38 @@ public class MainActivity extends BaseMvpActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+    //提示获取定位权限，BLE android6.0以上用
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        toScanning();
+        switch (requestCode) {
+            case PERMISSION_REQUEST_COARSE_LOCATION:
+                if (grantResults != null && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {//提示获取定位权限，BLE android6.0以上用
+
+                }
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        switch (requestCode) {
+//        }
+//        super.onActivityResult(requestCode, resultCode, data);
+        IntentResult intentResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (intentResult != null) {
+//            if(intentResult.getContents() == null) {
+//                Toast.makeText(this,"内容为空",Toast.LENGTH_LONG).show();
+//            } else {
+//                Toast.makeText(this,"扫描成功",Toast.LENGTH_LONG).show();
+//                // ScanResult 为 获取到的字符串
+//                String ScanResult = intentResult.getContents();
+//                TextView scan_result=(TextView)findViewById(R.id.scan_result);
+//                scan_result.setText(ScanResult);
+//            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }
