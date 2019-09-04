@@ -149,6 +149,19 @@ public class ScanResultActivity extends BaseMvpActivity {
                                     mScanbeanArrayList.remove(i);
                                 mCommonRecylerAdapter.notifyDataSetChanged();
                             }
+                            int selectSize = getSelectSize();
+                            if (selectSize <= 0) {
+                                textDelete.setFocusable(false);
+                                textDelete.setClickable(false);
+                                textDelete.setBackground(getResources().getDrawable(R.drawable.shape_backblack_all));
+                                linerBninding.setBackground(getResources().getDrawable(R.drawable.shape_backblack_all));
+                            } else {
+                                textDelete.setFocusable(true);
+                                textDelete.setClickable(true);
+                                textDelete.setBackground(getResources().getDrawable(R.drawable.shape_backline));
+                                linerBninding.setBackground(getResources().getDrawable(R.drawable.shape_backblue));
+                            }
+                            textSelectAll.setText("全选（" + selectSize + "/" + mScanbeanArrayList.size() + ")");
                             mCurrencyDailogs.dismiss();
                         }
 
@@ -306,7 +319,7 @@ public class ScanResultActivity extends BaseMvpActivity {
      * 全选页面数据
      */
     private void getSelectAll() {
-        if (selectbool) {//以一个boobean 来判断全选跟取消全选
+        if (!isSelectbool()) {//以一个boobean 来判断全选跟取消全选
             imgSelectAll.setImageResource(R.drawable.select_true);
             for (int i = 0; i < mScanbeanArrayList.size(); i++) {
                 if (mScanbeanArrayList.get(i).isBoolean())
@@ -315,7 +328,6 @@ public class ScanResultActivity extends BaseMvpActivity {
                     mScanbeanArrayList.get(i).setBoolean(true);
             }
             linerBninding.setBackground(getResources().getDrawable(R.drawable.shape_backblue));
-            selectbool = !selectbool;
             textSelectAll.setText("全选（" + mScanbeanArrayList.size() + "/" + mScanbeanArrayList.size() + ")");
             textDelete.setBackground(getResources().getDrawable(R.drawable.shape_backline));
             textDelete.setFocusable(true);
@@ -343,7 +355,6 @@ public class ScanResultActivity extends BaseMvpActivity {
             else
                 continue;
         }
-        selectbool = !selectbool;
     }
 
     @Override

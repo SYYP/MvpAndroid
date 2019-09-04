@@ -24,7 +24,7 @@ public class ClassAdapter {
     CommonRecylerAdapter mClassRecylerAdapter;
     CommonRecylerAdapter mRecylerAdapter;
     CommonRecylerAdapter mRecylerSubject;
-    List<InforBean.MainTeacherClazzBean> classNameOrSubjectList=new ArrayList<>();
+    List<InforBean.MainTeacherClazzBean> classNameOrSubjectList = new ArrayList<>();
     Context mContext;
     int mSerachTag;
 
@@ -53,15 +53,18 @@ public class ClassAdapter {
                     }
                     if (mInforBean.getRoleNameCode().equals(Contact.TEACHER)) {
                         List<InforBean.MainTeacherClazzBean.ClassInfosBean> classInfos = classbean.getClassInfos();
-                        Log.d("TAG",classInfos.toString());
-                        addDataAdapter(recyclerView, classInfos, context);
+                        Log.d("TAG", classInfos.toString());
+                            recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
+                            addDataAdapter(recyclerView, classInfos, context);
                     } else {
                         if (mSerachTag == 1) {
                             List<InforBean.MainTeacherClazzBean.SubjectInfosBean> subjectInfos = classbean.getSubjectInfos();
-                            addDataSubjectAdapter(recyclerView, subjectInfos, context, classbean);
+                                recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
+                                addDataSubjectAdapter(recyclerView, subjectInfos, context, classbean);
                         } else {
                             List<InforBean.MainTeacherClazzBean.ClassInfosBean> classInfos = classbean.getClassInfos();
-                            addDataAdapter(recyclerView, classInfos, context);
+                                recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
+                                addDataAdapter(recyclerView, classInfos, context);
                         }
                     }
                 }
@@ -78,8 +81,6 @@ public class ClassAdapter {
      * @param classInfos
      */
     private void addDataAdapter(RecyclerView recyclerView, List<InforBean.MainTeacherClazzBean.ClassInfosBean> classInfos, Context context) {
-        recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
-        if(mRecylerAdapter==null) {
             mRecylerAdapter = new CommonRecylerAdapter(context, classInfos, R.layout.item_select_yearname) {
                 @Override
                 public void convert(CommonRecylerHolder holder, Object item, int position, boolean isScrolling) {
@@ -101,9 +102,6 @@ public class ClassAdapter {
                 }
             };
             recyclerView.setAdapter(mRecylerAdapter);
-        }else {
-            mRecylerAdapter.setList(classInfos);
-        }
 
     }
 
@@ -115,31 +113,27 @@ public class ClassAdapter {
      * @param classbean
      */
     private void addDataSubjectAdapter(RecyclerView recyclerView, List<InforBean.MainTeacherClazzBean.SubjectInfosBean> infosBeans, Context context, InforBean.MainTeacherClazzBean classbean) {
-        if (mRecylerSubject == null) {
-            mRecylerSubject = new CommonRecylerAdapter(context, infosBeans, R.layout.item_select_yearname) {
-                @Override
-                public void convert(CommonRecylerHolder holder, Object item, int position, boolean isScrolling) {
-                    holder.setIsRecyclable(false);
-                    InforBean.MainTeacherClazzBean.SubjectInfosBean gradeBean = (InforBean.MainTeacherClazzBean.SubjectInfosBean) item;
-                    holder.setText(R.id.item_text_info, gradeBean.getSubjectNameValue());
-                    if (gradeBean.isBoolean())
-                        holder.setBackground(R.id.liner_text_info, context.getDrawable(R.drawable.shape_backblack_all));
-                    else
-                        holder.setBackground(R.id.liner_text_info, context.getDrawable(R.drawable.shape_backblack));
+        mRecylerSubject = new CommonRecylerAdapter(context, infosBeans, R.layout.item_select_yearname) {
+            @Override
+            public void convert(CommonRecylerHolder holder, Object item, int position, boolean isScrolling) {
+                holder.setIsRecyclable(false);
+                InforBean.MainTeacherClazzBean.SubjectInfosBean gradeBean = (InforBean.MainTeacherClazzBean.SubjectInfosBean) item;
+                holder.setText(R.id.item_text_info, gradeBean.getSubjectNameValue());
+                if (gradeBean.isBoolean())
+                    holder.setBackground(R.id.liner_text_info, context.getDrawable(R.drawable.shape_backblack_all));
+                else
+                    holder.setBackground(R.id.liner_text_info, context.getDrawable(R.drawable.shape_backblack));
 
-                    holder.setOnRecyclerItemClickListener(R.id.item_text_info, new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            gradeBean.setBoolean(!gradeBean.isBoolean());
-                            mClassRecylerAdapter.notifyDataSetChanged();
-                        }
-                    });
-                }
-            };
-            recyclerView.setAdapter(mRecylerSubject);
-        } else {
-            mRecylerSubject.setList(infosBeans);
-        }
+                holder.setOnRecyclerItemClickListener(R.id.item_text_info, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        gradeBean.setBoolean(!gradeBean.isBoolean());
+                        mClassRecylerAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        };
+        recyclerView.setAdapter(mRecylerSubject);
 
     }
 

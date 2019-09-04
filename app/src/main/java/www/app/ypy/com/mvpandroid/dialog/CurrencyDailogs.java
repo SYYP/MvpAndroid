@@ -37,11 +37,15 @@ public class CurrencyDailogs extends BaseDialog {
 
     @Override
     protected void init() {
-        tvTitle.setText(mDailogBean.getTitle());
+        if (TextUtils.isEmpty(mDailogBean.getTitle())) {
+            tvTitle.setVisibility(View.INVISIBLE);
+        } else {
+            tvTitle.setText(mDailogBean.getTitle());
+        }
         tvYes.setText(mDailogBean.getSure() == null ? "确定" : mDailogBean.getSure());
         tvCanel.setText(mDailogBean.getPuse() == null ? "取消" : mDailogBean.getPuse());
         if (TextUtils.isEmpty(mDailogBean.getCount())) {
-            tvCount.setVisibility(View.GONE);
+            tvCount.setVisibility(View.INVISIBLE);
         } else {
             tvCount.setText(mDailogBean.getCount());
         }

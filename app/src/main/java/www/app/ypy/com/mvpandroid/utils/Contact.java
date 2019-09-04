@@ -44,4 +44,5 @@ public class Contact {
      */
     public static final int ONE = 1;
     public static final int TWO = 2;
+    public static final String BUGLY_ID="7caf8b2d4d";
 }

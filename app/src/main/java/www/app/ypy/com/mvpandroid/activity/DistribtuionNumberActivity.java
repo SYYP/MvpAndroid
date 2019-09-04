@@ -217,8 +217,11 @@ public class DistribtuionNumberActivity extends BaseMvpActivity<DailyInterface.P
     private void setGradeAdater(List<InforBean.MainTeacherClazzBean> mainTeacherClazzBeans) {
         if (mGradeAadapter == null) {
             mGradeAadapter = new GradeAadapter(mainTeacherClazzBeans, this);
+            mGradeAadapter.setGradeAdater(recyclerYearName);
+        }else {
+            mGradeAadapter.getSuccessData(mainTeacherClazzBeans);
         }
-        mGradeAadapter.setGradeAdater(recyclerYearName);
+
     }
 
     /**
@@ -377,36 +380,41 @@ public class DistribtuionNumberActivity extends BaseMvpActivity<DailyInterface.P
             @Override
             public void getOnClick(int position) {
                 boolean isnum = true;
-                if (!bindlist.get(position).isAbool()) {
+                if (bindlist != null && bindlist.size() > 0) {
+
+
+                    if (!bindlist.get(position).isAbool()) {
+                        int num = getNum(bindlist);
+                        if (mParcelableArrayList.size() == num) {
+                            toastShort("选中账号数量不能超过设备数量");
+                            isnum = false;
+                            return;
+                        }
+                    }
+                    if (isnum) {
+                        bindlist.get(position).setAbool(!bindlist.get(position).isAbool());
+                        mBindListEqumentAdapter.getSuccessData(bindlist);
+                    }
                     int num = getNum(bindlist);
-                    if (mParcelableArrayList.size() == num) {
-                        toastShort("选中账号数量不能超过设备数量");
-                        isnum = false;
-                        return;
+                    textSelectNumber.setText("(" + num + "/" + mParcelableArrayList.size() + ")");//显示传过来的设备数量
+                    if (num == bindlist.size()) {
+                        imgSelectAll.setImageResource(R.drawable.select_off);
+                    } else {
+                        imgSelectAll.setImageResource(R.drawable.select_no);
                     }
                 }
-                if (isnum) {
-                    bindlist.get(position).setAbool(!bindlist.get(position).isAbool());
-                    mBindListEqumentAdapter.getSuccessData(bindlist);
-                }
-                int num = getNum(bindlist);
-                textSelectNumber.setText("(" + num + "/" + mParcelableArrayList.size() + ")");//显示传过来的设备数量
-                if (num == bindlist.size()) {
-                    imgSelectAll.setImageResource(R.drawable.select_off);
-                } else {
-                    imgSelectAll.setImageResource(R.drawable.select_no);
-                }
             }
+                private int getNum (List < Bindlistbean > bindlist) {
+                    int num = 0;
+                    for (int i = 0; i < bindlist.size(); i++) {
+                        if (bindlist.get(i).isAbool())
+                            num++;
+                    }
+                    return num;
+                }
 
-            private int getNum(List<Bindlistbean> bindlist) {
-                int num = 0;
-                for (int i = 0; i < bindlist.size(); i++) {
-                    if (bindlist.get(i).isAbool())
-                        num++;
-                }
-                return num;
-            }
         });
+
     }
 
     @Override
@@ -552,6 +560,7 @@ public class DistribtuionNumberActivity extends BaseMvpActivity<DailyInterface.P
 
     @Override
     public void getSuccessClassData(List<InforBean.MainTeacherClazzBean> mainTeacherClazzBean) {
+        mainTeacherClazzBeans.clear();
         mainTeacherClazzBeans.addAll(mainTeacherClazzBean);
         setGradeAdater(mainTeacherClazzBeans);//设置年级的数据源
     }
@@ -581,11 +590,15 @@ public class DistribtuionNumberActivity extends BaseMvpActivity<DailyInterface.P
                 }
 
             } else {
-                subjectList.addAll(mainTeacherClazzBeans);
+                subjectList.clear();
+                subjectList.addAll(mainTeacherClazzBean);
                 if (mClassAdapter == null) {
                     mClassAdapter = new ClassAdapter(subjectList, this, searchTag);
+                    mClassAdapter.setClassAdapter(recyclerClass, mInforBean);
+                }else {
+                    mClassAdapter.getSuccessData(subjectList,searchTag);
                 }
-                mClassAdapter.setClassAdapter(recyclerClass, mInforBean);
+
             }
         }
     }
@@ -607,7 +620,6 @@ public class DistribtuionNumberActivity extends BaseMvpActivity<DailyInterface.P
         } else {
             getShowFailDialog(failNumber, successNumber);
         }
-
     }
 
     /**
@@ -618,8 +630,8 @@ public class DistribtuionNumberActivity extends BaseMvpActivity<DailyInterface.P
      */
     private void getShowSuccessDialog(int failNumber, int successNumber) {
         DailogBean dailogBean = new DailogBean();
-        dailogBean.setTitle("绑定失败，成功绑定" + successNumber + "台设备," + "失败" + failNumber + "台");
-        dailogBean.setCount("是否继续绑定！");
+        dailogBean.setTitle("成功绑定" + successNumber + "台设备," + "失败" + failNumber + "台");
+        dailogBean.setCount("还有未绑定设备是否继续绑定！");
         if (mCurrencyDailogs == null) {
             mCurrencyDailogs = new CurrencyDailogs(dailogBean, this);
             mCurrencyDailogs.setOnClickListener(new CurrencyDailogs.SetOnClick() {
@@ -844,11 +856,6 @@ public class DistribtuionNumberActivity extends BaseMvpActivity<DailyInterface.P
         }
     }
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        EventBus.getDefault().register(this);
-    }
 
     /**
      * 加载数据

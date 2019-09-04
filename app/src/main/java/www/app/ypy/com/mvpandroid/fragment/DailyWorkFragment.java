@@ -435,12 +435,14 @@ public class DailyWorkFragment extends BaseMvpFragment<DailyInterface.Presenter>
         if (searchTag == 1) {//学生清空科目集合
             for (int i = 0; i < subjectList.size(); i++) {
                 List<InforBean.MainTeacherClazzBean.SubjectInfosBean> subjectInfos = subjectList.get(i).getSubjectInfos();
-                for (int j = 0; j < subjectInfos.size(); j++) {
-                    subjectInfos.get(j).setBoolean(false);
-                    if (mClassAdapter != null) {
-                        mClassAdapter.getSuccessData(subjectList, searchTag);
-                    }
+                if(subjectInfos!=null&&subjectInfos.size()>0) {
+                    for (int j = 0; j < subjectInfos.size(); j++) {
+                        subjectInfos.get(j).setBoolean(false);
+                        if (mClassAdapter != null) {
+                            mClassAdapter.getSuccessData(subjectList, searchTag);
+                        }
 
+                    }
                 }
             }
         } else {
@@ -737,6 +739,7 @@ public class DailyWorkFragment extends BaseMvpFragment<DailyInterface.Presenter>
      */
     @Override
     public void getSuccessClassData(List<InforBean.MainTeacherClazzBean> mainTeacherClazzBean) {
+        mainTeacherClazzBeans.clear();
         mainTeacherClazzBeans.addAll(mainTeacherClazzBean);
         setGradeAdater(mainTeacherClazzBeans);//设置年级的数据源
     }
@@ -766,11 +769,15 @@ public class DailyWorkFragment extends BaseMvpFragment<DailyInterface.Presenter>
                 }
 
             } else {
-                subjectList.addAll(mainTeacherClazzBeans);
+                subjectList.clear();
+                subjectList.addAll(mainTeacherClazzBean);
                 if (mClassAdapter == null) {
                     mClassAdapter = new ClassAdapter(subjectList, getActivity(), searchTag);
+                    mClassAdapter.setClassAdapter(recyclerClass, mInforBean);
+                }else {
+                    mClassAdapter.getSuccessData(subjectList,searchTag);
                 }
-                mClassAdapter.setClassAdapter(recyclerClass, mInforBean);
+
             }
         }
     }
@@ -836,8 +843,11 @@ public class DailyWorkFragment extends BaseMvpFragment<DailyInterface.Presenter>
     private void setGradeAdater(List<InforBean.MainTeacherClazzBean> mainTeacherClazzBeans) {
         if (mGradeAadapter == null) {
             mGradeAadapter = new GradeAadapter(mainTeacherClazzBeans, getActivity());
+            mGradeAadapter.setGradeAdater(recyclerYearName);
+        }else {
+            mGradeAadapter.getSuccessData(mainTeacherClazzBeans);
         }
-        mGradeAadapter.setGradeAdater(recyclerYearName);
+
     }
 
     /**
