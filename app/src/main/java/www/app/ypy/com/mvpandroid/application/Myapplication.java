@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
+import com.tencent.bugly.Bugly;
 import com.tencent.bugly.crashreport.CrashReport;
 
 import java.io.BufferedReader;
@@ -92,7 +93,7 @@ public class Myapplication extends Application {
         CrashReport.UserStrategy strategy = new CrashReport.UserStrategy(context);
         strategy.setUploadProcess(processName == null || processName.equals(packageName));
 // 初始化Bugly
-        CrashReport.initCrashReport(getApplicationContext(), Contact.BUGLY_ID, true);
+        Bugly.init(getApplicationContext(), Contact.BUGLY_ID, false);
         if (inMainProcess(this)) {
             initThreadData();
         }

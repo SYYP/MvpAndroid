@@ -265,14 +265,14 @@ public class InforBean {
 
             private int subjectId;
             private String subjectNameValue;
-           private boolean mBoolean;
+           private boolean abool;
 
-            public boolean isBoolean() {
-                return mBoolean;
+            public boolean isAbool() {
+                return abool;
             }
 
-            public void setBoolean(boolean aBoolean) {
-                mBoolean = aBoolean;
+            public void setAbool(boolean abool) {
+                this.abool = abool;
             }
 
             public int getSubjectId() {

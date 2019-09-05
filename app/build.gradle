@@ -1,12 +1,20 @@
 apply plugin: 'com.android.application'
 android {
+    signingConfigs {
+        kapa {
+            keyAlias 'key0'
+            keyPassword '123456'
+            storeFile file('kapa.jks')
+            storePassword '123456'
+        }
+    }
     compileSdkVersion 28
     defaultConfig {
         applicationId "www.app.ypy.com.mvpandroid"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0"
+        versionName "1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_8
@@ -22,7 +30,6 @@ android {
         // but continue the build even when errors are found:
         abortOnError false
     }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -36,7 +43,7 @@ android {
     }
 }
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     testImplementation 'junit:junit:4.12'
@@ -72,12 +79,13 @@ dependencies {
     implementation 'com.android.support:support-annotations:20.0.0'
     //springview
     implementation 'com.liaoinstan.springview:library:1.5.1'
-    implementation 'com.liaoinstan.springview:MeituanHeader:1.5.1'       //美团风格 （header and footer）、
-
+    implementation 'com.liaoinstan.springview:MeituanHeader:1.5.1'
+    //美团风格 （header and footer）、
     //二维码扫描
     implementation 'com.google.zxing:core:3.2.1'
     implementation 'com.journeyapps:zxing-android-embedded:3.3.0'
     //其中latest.release指代最新Bugly SDK版本号，也可以指定明确的版本号，例如2.2.0
-    implementation 'com.tencent.bugly:crashreport:latest.release'
-    implementation 'com.tencent.bugly:nativecrashreport:latest.release' //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
+    implementation 'com.tencent.bugly:crashreport_upgrade:latest.release'
+    implementation 'com.tencent.bugly:nativecrashreport:latest.release'
+    //其中latest.release指代最新Bugly NDK版本号，也可以指定明确的版本号，例如3.0
 }

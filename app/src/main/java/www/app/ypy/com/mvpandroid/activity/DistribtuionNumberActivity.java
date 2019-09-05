@@ -690,7 +690,7 @@ public class DistribtuionNumberActivity extends BaseMvpActivity<DailyInterface.P
                 List<InforBean.MainTeacherClazzBean.SubjectInfosBean> infosBeans = subjectList.get(i).getSubjectInfos();
                 if (infosBeans != null && infosBeans.size() > 0) {
                     for (int j = 0; j < infosBeans.size(); j++) {
-                        infosBeans.get(j).setBoolean(false);
+                        infosBeans.get(j).setAbool(false);
                         mClassAdapter.getSuccessData(subjectList, searchTag);
 
                     }
@@ -726,8 +726,8 @@ public class DistribtuionNumberActivity extends BaseMvpActivity<DailyInterface.P
                 if (infosBeans == null)
                     return;
                 for (int j = 0; j < infosBeans.size(); j++) {
-                    if (infosBeans.get(i).isBoolean()) {
-                        subjectId.append(infosBeans.get(i).getSubjectId() + ",");
+                    if (infosBeans.get(j).isAbool()) {
+                        subjectId.append(infosBeans.get(j).getSubjectId() + ",");
                     }
                 }
             }
@@ -748,8 +748,8 @@ public class DistribtuionNumberActivity extends BaseMvpActivity<DailyInterface.P
                 if (classInfos == null)
                     return;
                 for (int j = 0; j < classInfos.size(); j++) {
-                    if (classInfos.get(i).isAbool()) {
-                        stringBuilder.append(classInfos.get(i).getClassId() + ",");
+                    if (classInfos.get(j).isAbool()) {
+                        stringBuilder.append(classInfos.get(j).getClassId() + ",");
                     }
 
                 }
@@ -760,8 +760,7 @@ public class DistribtuionNumberActivity extends BaseMvpActivity<DailyInterface.P
             } else {
                 String classIdsing = classId.substring(0, classId.length() - 1);
                 if (!TextUtils.isEmpty(classIdsing)) {
-                    classIds = classIdsing;
-                    presenter.getBindListData(mInforBean.getUserId(), searchTag, gradeId, classIds, keywords, pageTag, subjectIds, ps, pn);
+                    presenter.getBindListData(mInforBean.getUserId(), searchTag, gradeId, classIdsing, keywords, pageTag, subjectIds, ps, pn);
                 }
             }
         }

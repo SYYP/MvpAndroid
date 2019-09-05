@@ -340,8 +340,8 @@ public class DailyWorkFragment extends BaseMvpFragment<DailyInterface.Presenter>
                 if (infosBeans == null || infosBeans.isEmpty())
                     return;
                 for (int j = 0; j < infosBeans.size(); j++) {
-                    if (infosBeans.get(i).isBoolean()) {
-                        stringBuilder.append(infosBeans.get(i).getSubjectId() + ",");
+                    if (infosBeans.get(j).isAbool()) {
+                        stringBuilder.append(infosBeans.get(j).getSubjectId() + ",");
                     }
 
                 }
@@ -363,8 +363,8 @@ public class DailyWorkFragment extends BaseMvpFragment<DailyInterface.Presenter>
                 if (classInfos == null || classInfos.isEmpty())
                     return;
                 for (int j = 0; j < classInfos.size(); j++) {
-                    if (classInfos.get(i).isAbool()) {
-                        stringBuilder.append(classInfos.get(i).getClassId() + ",");
+                    if (classInfos.get(j).isAbool()) {
+                        stringBuilder.append(classInfos.get(j).getClassId() + ",");
                     }
                 }
             }
@@ -374,8 +374,7 @@ public class DailyWorkFragment extends BaseMvpFragment<DailyInterface.Presenter>
             } else {
                 String classIdsing = classId.substring(0, classId.length() - 1);
                 if (!TextUtils.isEmpty(classIdsing)) {
-                    classIds = classIdsing;
-                    presenter.getBindListData(mInforBean.getUserId(), searchTag, gradeId, classIds, keywords, pageTag, subjectIds, ps, pn);
+                    presenter.getBindListData(mInforBean.getUserId(), searchTag, gradeId, classIdsing, keywords, pageTag, subjectIds, ps, pn);
                 }
             }
 
@@ -435,9 +434,9 @@ public class DailyWorkFragment extends BaseMvpFragment<DailyInterface.Presenter>
         if (searchTag == 1) {//学生清空科目集合
             for (int i = 0; i < subjectList.size(); i++) {
                 List<InforBean.MainTeacherClazzBean.SubjectInfosBean> subjectInfos = subjectList.get(i).getSubjectInfos();
-                if(subjectInfos!=null&&subjectInfos.size()>0) {
+                if (subjectInfos != null && subjectInfos.size() > 0) {
                     for (int j = 0; j < subjectInfos.size(); j++) {
-                        subjectInfos.get(j).setBoolean(false);
+                        subjectInfos.get(j).setAbool(false);
                         if (mClassAdapter != null) {
                             mClassAdapter.getSuccessData(subjectList, searchTag);
                         }
@@ -774,8 +773,8 @@ public class DailyWorkFragment extends BaseMvpFragment<DailyInterface.Presenter>
                 if (mClassAdapter == null) {
                     mClassAdapter = new ClassAdapter(subjectList, getActivity(), searchTag);
                     mClassAdapter.setClassAdapter(recyclerClass, mInforBean);
-                }else {
-                    mClassAdapter.getSuccessData(subjectList,searchTag);
+                } else {
+                    mClassAdapter.getSuccessData(subjectList, searchTag);
                 }
 
             }
@@ -844,7 +843,7 @@ public class DailyWorkFragment extends BaseMvpFragment<DailyInterface.Presenter>
         if (mGradeAadapter == null) {
             mGradeAadapter = new GradeAadapter(mainTeacherClazzBeans, getActivity());
             mGradeAadapter.setGradeAdater(recyclerYearName);
-        }else {
+        } else {
             mGradeAadapter.getSuccessData(mainTeacherClazzBeans);
         }
 

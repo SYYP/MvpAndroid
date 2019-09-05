@@ -119,7 +119,7 @@ public class ClassAdapter {
                 holder.setIsRecyclable(false);
                 InforBean.MainTeacherClazzBean.SubjectInfosBean gradeBean = (InforBean.MainTeacherClazzBean.SubjectInfosBean) item;
                 holder.setText(R.id.item_text_info, gradeBean.getSubjectNameValue());
-                if (gradeBean.isBoolean())
+                if (gradeBean.isAbool())
                     holder.setBackground(R.id.liner_text_info, context.getDrawable(R.drawable.shape_backblack_all));
                 else
                     holder.setBackground(R.id.liner_text_info, context.getDrawable(R.drawable.shape_backblack));
@@ -127,7 +127,7 @@ public class ClassAdapter {
                 holder.setOnRecyclerItemClickListener(R.id.item_text_info, new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        gradeBean.setBoolean(!gradeBean.isBoolean());
+                        gradeBean.setAbool(!gradeBean.isAbool());
                         mClassRecylerAdapter.notifyDataSetChanged();
                     }
                 });
