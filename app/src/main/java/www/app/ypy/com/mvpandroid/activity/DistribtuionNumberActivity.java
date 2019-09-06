@@ -183,9 +183,7 @@ public class DistribtuionNumberActivity extends BaseMvpActivity<DailyInterface.P
     }
 
     @Override
-    public void showNetError() {
-    }
-
+    public void showNetError() {}
     @Override
     public void noNetWork() {
         //没有网络时候
@@ -218,7 +216,7 @@ public class DistribtuionNumberActivity extends BaseMvpActivity<DailyInterface.P
         if (mGradeAadapter == null) {
             mGradeAadapter = new GradeAadapter(mainTeacherClazzBeans, this);
             mGradeAadapter.setGradeAdater(recyclerYearName);
-        }else {
+        } else {
             mGradeAadapter.getSuccessData(mainTeacherClazzBeans);
         }
 
@@ -261,7 +259,6 @@ public class DistribtuionNumberActivity extends BaseMvpActivity<DailyInterface.P
      * 下拉框学校
      */
     private void initDataSpinnerSchool() {
-
         BaseSpinnerAdapter baseSchollAdapter = new BaseSpinnerAdapter(this, mSectionInfos) {
             @Nullable
             @Override
@@ -381,8 +378,6 @@ public class DistribtuionNumberActivity extends BaseMvpActivity<DailyInterface.P
             public void getOnClick(int position) {
                 boolean isnum = true;
                 if (bindlist != null && bindlist.size() > 0) {
-
-
                     if (!bindlist.get(position).isAbool()) {
                         int num = getNum(bindlist);
                         if (mParcelableArrayList.size() == num) {
@@ -404,14 +399,14 @@ public class DistribtuionNumberActivity extends BaseMvpActivity<DailyInterface.P
                     }
                 }
             }
-                private int getNum (List < Bindlistbean > bindlist) {
-                    int num = 0;
-                    for (int i = 0; i < bindlist.size(); i++) {
-                        if (bindlist.get(i).isAbool())
-                            num++;
-                    }
-                    return num;
+            private int getNum(List<Bindlistbean> bindlist) {
+                int num = 0;
+                for (int i = 0; i < bindlist.size(); i++) {
+                    if (bindlist.get(i).isAbool())
+                        num++;
                 }
+                return num;
+            }
 
         });
 
@@ -428,9 +423,7 @@ public class DistribtuionNumberActivity extends BaseMvpActivity<DailyInterface.P
     }
 
     @Override
-    public void DeleteSuccessEqument(List<DeleteEqument> deleteEqumentList) {
-
-    }
+    public void DeleteSuccessEqument(List<DeleteEqument> deleteEqumentList) {}
 
     @OnClick({R.id.img_back, R.id.img_serachs, R.id.liner_yearname, R.id.text_reset, R.id.text_sure, R.id.liner_classname, R.id.text_grade_reset,
             R.id.text_grade_sure, R.id.img_select_all, R.id.liner_bninding})
@@ -595,8 +588,8 @@ public class DistribtuionNumberActivity extends BaseMvpActivity<DailyInterface.P
                 if (mClassAdapter == null) {
                     mClassAdapter = new ClassAdapter(subjectList, this, searchTag);
                     mClassAdapter.setClassAdapter(recyclerClass, mInforBean);
-                }else {
-                    mClassAdapter.getSuccessData(subjectList,searchTag);
+                } else {
+                    mClassAdapter.getSuccessData(subjectList, searchTag);
                 }
 
             }

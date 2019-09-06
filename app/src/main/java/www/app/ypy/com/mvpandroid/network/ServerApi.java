@@ -1,8 +1,6 @@
 package www.app.ypy.com.mvpandroid.network;
 import java.util.List;
-
 import retrofit2.http.Body;
-import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.HTTP;
 import retrofit2.http.Path;
@@ -18,11 +16,6 @@ import www.app.ypy.com.mvpandroid.bean.LoginBean;
  * 游戏用的请求管理器
  */
 public interface ServerApi {
-
-
-
-
-
   //  @FormUrlEncoded
     @GET("login")
     Observable<BaseResult<LoginBean>> getLogin(@Query("login") String account, @Query("password") String password);
@@ -64,9 +57,6 @@ public interface ServerApi {
      //绑定接口
      @HTTP(method = "POST",path ="mobile/common/devices",hasBody = true)
      Observable<BaseResult<List<DeleteEqument>>> getBindEqument(@Body List<DeleteBean> bingEqumentList);
-
-//
-
 //    /**
 //     * 图书下载2
 //     */

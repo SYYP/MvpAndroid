@@ -1,6 +1,4 @@
 package www.app.ypy.com.mvpandroid.fragment;
-
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,18 +15,14 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-
 import com.alibaba.fastjson.JSON;
 import com.liaoinstan.springview.meituanheader.MeituanFooter;
 import com.liaoinstan.springview.meituanheader.MeituanHeader;
 import com.liaoinstan.springview.widget.SpringView;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
-import rx.functions.Action1;
 import www.app.ypy.com.mvpandroid.R;
 import www.app.ypy.com.mvpandroid.activity.LoginActivity;
 import www.app.ypy.com.mvpandroid.activity.SerachActivity;
@@ -49,7 +43,6 @@ import www.app.ypy.com.mvpandroid.gradeadapter.BindListAdapter;
 import www.app.ypy.com.mvpandroid.gradeadapter.ClassAdapter;
 import www.app.ypy.com.mvpandroid.gradeadapter.GradeAadapter;
 import www.app.ypy.com.mvpandroid.utils.Contact;
-import www.app.ypy.com.mvpandroid.utils.NetUtils;
 import www.app.ypy.com.mvpandroid.utils.SpUtils;
 import www.app.ypy.com.mvpandroid.utils.UIUtils;
 
@@ -189,9 +182,7 @@ public class DailyWorkFragment extends BaseMvpFragment<DailyInterface.Presenter>
     }
 
     @Override
-    public void showNetError() {
-
-    }
+    public void showNetError() {}
 
     @Override
     public void noNetWork() {
@@ -273,7 +264,6 @@ public class DailyWorkFragment extends BaseMvpFragment<DailyInterface.Presenter>
                             //教师的数据源
                             getClassNameData();
                         }
-
                     }
                     classbool = false;
                 } else {
@@ -520,7 +510,6 @@ public class DailyWorkFragment extends BaseMvpFragment<DailyInterface.Presenter>
                 selectSize++;
             }
         }
-
         return selectSize;
     }
 
@@ -532,15 +521,17 @@ public class DailyWorkFragment extends BaseMvpFragment<DailyInterface.Presenter>
         if (isSelect) {
             //全选的话，遍历数据源更改状态值
             for (int i = 0; i < bindlist.size(); i++) {
-                if (!bindlist.get(i).isAbool())
+                if (!bindlist.get(i).isAbool()) {
                     bindlist.get(i).setAbool(true);
+                }
                 mBindListAdapter.getBindList(bindlist, photoabool);
 
             }
         } else {
             for (int i = 0; i < bindlist.size(); i++) {
-                if (bindlist.get(i).isAbool())
+                if (bindlist.get(i).isAbool()) {
                     bindlist.get(i).setAbool(false);
+                }
                 mBindListAdapter.getBindList(bindlist, photoabool);
 
             }
@@ -565,7 +556,6 @@ public class DailyWorkFragment extends BaseMvpFragment<DailyInterface.Presenter>
             if (mBindListAdapter != null) {
                 mBindListAdapter.getBindList(bindlist, photoabool);
             }
-
             textGl.setText(mabool == true ? "完成" : "管理");
             mabool = !mabool;//该值用来控制切换是管理还是完成状态
         }
@@ -663,8 +653,9 @@ public class DailyWorkFragment extends BaseMvpFragment<DailyInterface.Presenter>
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String name = (String) baseTypeAdapter.getObjectItem(i);
-                if (!bindlist.isEmpty())
+                if (!bindlist.isEmpty()) {
                     bindlist.clear();
+                }
                 if (Contact.TEACHER_NAME.equals(name)) {
                     textSelectTitle.setText(R.string.string_subject);
                     searchTag = 1;//选择教师类型为1
@@ -782,9 +773,7 @@ public class DailyWorkFragment extends BaseMvpFragment<DailyInterface.Presenter>
     }
 
     @Override
-    public void getSuccessData(int failNumber, int successNumber) {
-
-    }
+    public void getSuccessData(int failNumber, int successNumber) {}
 
     /**
      * 当账号为教师时候操作的数据
@@ -818,11 +807,9 @@ public class DailyWorkFragment extends BaseMvpFragment<DailyInterface.Presenter>
         } else {
             mBindListAdapter.getBindList(bindlistbeans, photoabool);
         }
-
         mBindListAdapter.setOnClickListener(new BindListAdapter.SetOnClick() {
             @Override
             public void getOnClick(Bindlistbean bindlistbean, CommonRecylerAdapter mCommonRecylerAdapter) {
-
                 if ("管理".equals(textGl.getText().toString())) {
                     setDeleteData(bindlistbean);
                 } else {
